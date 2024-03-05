@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VERMANICO UPI Code Generator</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            overflow: auto;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        #background-video {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -1;
+            background-size: cover;
+        }
+
+        .custom-container {
+            margin-top: 50px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .custom-label {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .custom-label h1 {
+            font-size: 28px;
+            margin-bottom: 20px;
+        }
+
+        .custom-label p {
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+
+        .form-group input {
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ced4da;
+            padding: 10px;
+        }
+
+        .form-group label {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .qr-code {
+            display: block;
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        footer {
+            background-color: #388E3C;
+            color: #ffffff;
+            padding: 10px 0;
+            text-align: center;
+            width: 100%;
+            height: 50px;
+            position: fixed;
+            bottom: 0;
+            z-index: 1;
+            display: none; /* Initially hidden */
+        }
+
+        .generate-btn,
+        .download-btn {
+            background: linear-gradient(135deg, #4CAF50, #388E3C);
+            border: 1px solid #4CAF50;
+            margin-top: 20px;
+            color: #ffffff;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .generate-btn:hover,
+        .download-btn:hover {
+            background: linear-gradient(135deg, #43A047, #2E7D32);
+            border: 1px solid #43A047;
+        }
+    </style>
+</head>
+<body>
+    <!-- Background video -->
+    <video autoplay muted loop id="background-video">
+        <source src="background.mp4" type="video/mp4">
+        Your browser does not support HTML5 video.
+    </video>
+
+    <div class="container custom-container">
+        <!-- Label with white background -->
+        <div class="custom-label">
+            <h1 class="text-center">Nilam Direct Payments Corp.</h1>
+            <p class="lead text-center">VERMANICO Official QR Code Generator</p>
+            <!-- Text box for entering amount -->
+            <div class="form-group">
+                <label for="amountInput">Enter Amount (₹)</label>
+                <input type="text" class="form-control" id="amountInput" placeholder="PUT YOUR REQUEST AMOUNT IN ₹">
+            </div>
+            <!-- Text box for displaying pre-entered UPI ID -->
+            <div class="form-group">
+                <label for="upiIdInput">UPI ID</label>
+                <!-- Set prewritten UPI ID -->
+                <input type="text" class="form-control" id="upiIdInput" value="nirajmahanta108@oksbi" readonly>
+            </div>
+            <!-- Text box for entering banking name -->
+            <div class="form-group">
+                <label for="bankingNameInput">Official Banking Name</label>
+                <!-- Set prewritten banking name -->
+                <input type="text" class="form-control" id="bankingNameInput" value="NIRAJ MAHANTA" readonly>
+            </div>
+            <!-- Generate button -->
+            <button class="generate-btn btn btn-lg btn-block" onclick="generateQRCode()">Generate</button>
+            <!-- Placeholder for QR code -->
+            <div id="qrCode" class="qr-code"></div>
+            <!-- Download button -->
+            <a href="#" id="downloadLink" class="download-btn btn btn-lg btn-block">Download QR Code</a>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS (optional) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <!-- JavaScript to generate and download QR code -->
+    <script>
+        // Function to generate QR code
+        function generateQRCode() {
+            // Get the value from the amount input field
+            var amount = document.getElementById('amountInput').value;
+            // Get the pre-entered UPI ID
+            var upiId = 'nirajmahanta108@oksbi';
+            // Get the pre-entered Banking Name
+            var bankingName = 'NIRAJ MAHANTA';
+
+            // Construct the UPI link
+            var upiLink = 'upi://pay?pa=' + upiId + '&pn=' + bankingName + '&am=' + amount + '&cu=INR';
+            
+            // Generate the QR code using Google Chart API
+            var qrCodeUrl = 'https://chart.googleapis.com/chart?cht=qr&chs=512x512&chl=' + encodeURIComponent(upiLink);
+            
+            // Create an image element for the QR code
+            var qrCodeImg = document.createElement('img');
+            qrCodeImg.src = qrCodeUrl;
+            qrCodeImg.alt = 'QR Code';
+            
+            // Clear existing QR code (if any)
+            document.getElementById('qrCode').innerHTML = '';
+            
+            // Append the QR code image to the placeholder
+            document.getElementById('qrCode').appendChild(qrCodeImg);
+
+            // Set download link href to the QR code image source
+            document.getElementById('downloadLink').href = qrCodeUrl;
+            // Set download link download attribute to trigger automatic download
+            document.getElementById('downloadLink').setAttribute('download', 'QR_Code.png');
+
+            // Show the footer
+            document.querySelector('footer').style.display = 'block';
+        }
+
+        // Function to hide the footer
+        function hideFooter() {
+            document.querySelector('footer').style.display = 'none';
+        }
+
+        // Call hideFooter() when the page is refreshed
+        window.onload = hideFooter;
+    </script>
+
+    <!-- Footer -->
+    <footer>
+        Made with ❤️ by Nilam Direct Business
+    </footer>
+</body>
+</html>
