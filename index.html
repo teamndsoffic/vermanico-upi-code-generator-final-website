@@ -42,11 +42,13 @@
         .custom-label h1 {
             font-size: 28px;
             margin-bottom: 20px;
+            text-align: center; /* Centering the logo */
         }
 
         .custom-label p {
             font-size: 18px;
             margin-bottom: 30px;
+            text-align: center; /* Centering the logo */
         }
 
         .form-group input {
@@ -98,6 +100,16 @@
             background: linear-gradient(135deg, #43A047, #2E7D32);
             border: 1px solid #43A047;
         }
+
+        .center-image {
+            text-align: center;
+            margin-bottom: 20px; /* Adjust spacing */
+        }
+        
+        .center-image img {
+            width: 50px;
+            height: 50px;
+        }
     </style>
 </head>
 <body>
@@ -110,6 +122,10 @@
     <div class="container custom-container">
         <!-- Label with white background -->
         <div class="custom-label">
+            <!-- Centered Image -->
+            <div class="center-image">
+                <img src="vermanico logo.png" alt="VERMANICO Logo">
+            </div>
             <h1 class="text-center">Nilam Direct Payments Corp.</h1>
             <p class="lead text-center">VERMANICO Official QR Code Generator</p>
             <!-- Text box for entering amount -->
