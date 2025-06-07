@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VERMANICO UPI Code Generator</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #388E3C;
+            --primary-dark: #2E7D32;
+            --glass-white: rgba(255, 255, 255, 0.85);
+            --text-dark: #333;
+            --text-light: #f8f9fa;
+            --success-color: #28a745;
+            --error-color: #dc3545;
+            --info-color: #17a2b8;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+        
+        #background-video {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -1;
+            background-size: cover;
+            filter: brightness(0.7);
+        }
+        
+        .main-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            padding-bottom: 70px;
+        }
+        
+        .custom-container {
+            max-width: 500px;
+            width: 100%;
+            animation: fadeInUp 0.8s ease;
+        }
+        
+        .custom-label {
+            background: var(--glass-white);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .custom-label:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.25);
+        }
+        
+        .custom-label h1 {
+            font-size: 28px;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: 700;
+            color: var(--primary-dark);
+        }
+        
+        .custom-label p {
+            font-size: 16px;
+            margin-bottom: 25px;
+            text-align: center;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .form-group label {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: block;
+            color: var(--text-dark);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            font-size: 16px;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .form-control.error {
+            border-color: var(--error-color);
+            box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.2);
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(56, 142, 60, 0.2);
+            outline: none;
+        }
+        
+        .error-message {
+            color: var(--error-color);
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .btn {
+            padding: 14px 20px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+        
+        .btn-success {
+            background-color: var(--success-color);
+        }
+        
+        .btn-success:hover {
+            background-color: #218838;
+        }
+        
+        .btn-info {
+            background-color: var(--info-color);
+        }
+        
+        .btn-info:hover {
+            background-color: #138496;
+        }
+        
+        .btn-block {
+            width: 100%;
+        }
+        
+        .generate-btn {
+            margin-top: 20px;
+        }
+        
+        .qr-code {
+            margin: 25px 0;
+            text-align: center;
+            animation: fadeIn 0.6s ease-out;
+        }
+        
+        .qr-code img {
+            border-radius: 12px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+            max-width: 100%;
+            height: auto;
+        }
+        
+        .center-image {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .center-image img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+        }
+        
+        footer {
+            background: rgba(56, 142, 60, 0.9);
+            color: var(--text-light);
+            padding: 15px 0;
+            text-align: center;
+            width: 100%;
+            position: fixed;
+            bottom: 0;
+            z-index: 1;
+            font-weight: 500;
+            transform: translateY(0);
+            transition: transform 0.3s ease;
+        }
+        
+        footer.hidden {
+            transform: translateY(100%);
+        }
+        
+        /* Loading spinner */
+        .btn-loading {
+            pointer-events: none;
+            opacity: 0.9;
+        }
+        
+        .btn-loading .spinner {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 576px) {
+            .custom-label {
+                padding: 20px;
+            }
+            
+            .custom-label h1 {
+                font-size: 24px;
+            }
+            
+            .center-image img {
+                width: 50px;
+                height: 50px;
+            }
+            
+            .btn {
+                padding: 12px 15px;
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background video -->
+    <video autoplay muted loop id="background-video">
+        <source src="background.mp4" type="video/mp4">
+        Your browser does not support HTML5 video.
+    </video>
+
+    <div class="main-container">
+        <div class="custom-container">
+            <div class="custom-label">
+                <div class="center-image">
+                    <img src="vermanico logo.png" alt="VERMANICO Logo">
+                </div>
+                <h1>VERMANICO Payments</h1>
+                <p class="lead text-center">Official QR Code Generator</p>
+                
+                <div class="form-group">
+                    <label for="amountInput">Enter Amount (₹)</label>
+                    <input type="text" class="form-control" id="amountInput" placeholder="Enter amount in numbers only">
+                    <div class="error-message" id="amountError">Please enter a valid amount (numbers only)</div>
+                </div>
+                
+                <button class="generate-btn btn btn-primary btn-lg btn-block" id="generateBtn">
+                    <i class="fas fa-qrcode"></i> Generate QR Code
+                </button>
+                
+                <div id="qrCode" class="qr-code"></div>
+                
+                <button id="downloadBtn" class="btn btn-success btn-lg btn-block" style="display: none;">
+                    <i class="fas fa-download"></i> Download QR Code
+                </button>
+                
+                <button id="refreshBtn" class="btn btn-info btn-lg btn-block mt-3" style="display: none;">
+                    <i class="fas fa-sync-alt"></i> Refresh Generator
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <footer id="mainFooter">
+        Helpdesk: 18001800 / 18002021
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Configuration - Hidden from user but used in code
+        const MERCHANT_UPI_ID = '9957607120m@pnb';
+        const MERCHANT_NAME = 'VERMANICO';
+        
+        let currentQRCodeUrl = '';
+        let currentAmount = '';
+        const generateBtn = document.getElementById('generateBtn');
+        const downloadBtn = document.getElementById('downloadBtn');
+        const refreshBtn = document.getElementById('refreshBtn');
+        const amountInput = document.getElementById('amountInput');
+        const amountError = document.getElementById('amountError');
+        const footer = document.getElementById('mainFooter');
+        let lastScrollPosition = 0;
+        let qrGenerated = false;
+        
+        // Validate amount input
+        function validateAmount(amount) {
+            return /^\d*\.?\d+$/.test(amount) && parseFloat(amount) > 0;
+        }
+        
+        // Show error message
+        function showError() {
+            amountInput.classList.add('error');
+            amountError.style.display = 'block';
+        }
+        
+        // Hide error message
+        function hideError() {
+            amountInput.classList.remove('error');
+            amountError.style.display = 'none';
+        }
+        
+        // Generate QR code function
+        function generateQRCode() {
+            const amount = amountInput.value.trim();
+            
+            if (!validateAmount(amount)) {
+                showError();
+                return;
+            }
+            
+            hideError();
+            currentAmount = amount;
+            
+            // Set loading state
+            generateBtn.innerHTML = '<span class="spinner"></span> Generating...';
+            generateBtn.classList.add('btn-loading');
+            
+            // Construct UPI link
+            const upiLink = `upi://pay?pa=${MERCHANT_UPI_ID}&pn=${encodeURIComponent(MERCHANT_NAME)}&am=${amount}&cu=INR`;
+            currentQRCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(upiLink)}`;
+            
+            // Simulate processing delay
+            setTimeout(() => {
+                const qrCodeImg = document.createElement('img');
+                qrCodeImg.src = currentQRCodeUrl;
+                qrCodeImg.alt = 'QR Code';
+                
+                const qrCodeContainer = document.getElementById('qrCode');
+                qrCodeContainer.innerHTML = '';
+                qrCodeContainer.appendChild(qrCodeImg);
+                
+                // Show download and refresh buttons
+                downloadBtn.style.display = 'block';
+                refreshBtn.style.display = 'block';
+                
+                // Reset generate button
+                generateBtn.innerHTML = '<i class="fas fa-qrcode"></i> Generate QR Code';
+                generateBtn.classList.remove('btn-loading');
+                
+                // Set flag that QR has been generated
+                qrGenerated = true;
+                
+                // Hide footer initially after generation
+                footer.classList.add('hidden');
+            }, 1500);
+        }
+        
+        // Download QR code function
+        function downloadQRCode() {
+            if (!currentQRCodeUrl) {
+                alert('Please generate a QR code first');
+                return;
+            }
+            
+            const downloadLink = document.createElement('a');
+            downloadLink.href = currentQRCodeUrl;
+            downloadLink.download = `VERMANICO_QR_${currentAmount || 'payment'}_INR.png`;
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+        }
+        
+        // Refresh page function
+        function refreshGenerator() {
+            const refreshBtn = document.getElementById('refreshBtn');
+            refreshBtn.innerHTML = '<span class="spinner"></span> Refreshing...';
+            refreshBtn.classList.add('btn-loading');
+            
+            setTimeout(() => {
+                location.reload();
+            }, 800);
+        }
+        
+        // Handle scroll events
+        function handleScroll() {
+            const currentScrollPosition = window.scrollY || document.documentElement.scrollTop;
+            
+            if (qrGenerated) {
+                // Only hide/show footer if QR has been generated
+                if (currentScrollPosition > lastScrollPosition) {
+                    // Scrolling down - hide footer
+                    footer.classList.add('hidden');
+                } else {
+                    // Scrolling up - show footer
+                    footer.classList.remove('hidden');
+                }
+            }
+            
+            lastScrollPosition = currentScrollPosition <= 0 ? 0 : currentScrollPosition;
+        }
+        
+        // Event listeners
+        generateBtn.addEventListener('click', generateQRCode);
+        downloadBtn.addEventListener('click', downloadQRCode);
+        refreshBtn.addEventListener('click', refreshGenerator);
+        window.addEventListener('scroll', handleScroll);
+        
+        // Validate input on change
+        amountInput.addEventListener('input', function() {
+            if (this.value.trim() === '') {
+                hideError();
+            } else if (!validateAmount(this.value)) {
+                showError();
+            } else {
+                hideError();
+            }
+        });
+        
+        // Allow form submission with Enter key
+        amountInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                generateQRCode();
+            }
+        });
+        
+        // Auto-focus amount input on load
+        window.addEventListener('load', function() {
+            amountInput.focus();
+        });
+    </script>
+</body>
+</html>
